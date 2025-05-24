@@ -21,6 +21,7 @@ body {
     max-width: 1920px;
     border-radius: 20px;
     box-shadow: black 5px 5px 10px;
+    margin: 10px;
 }
 
 header {
@@ -132,6 +133,7 @@ li.skill {
 .thumbnails {
     flex-direction: row;
     flex-wrap: wrap;
+    max-width: 1300px
 }
 
 .thumbnails a img {
