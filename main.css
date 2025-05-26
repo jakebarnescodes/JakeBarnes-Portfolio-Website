@@ -102,6 +102,8 @@ iframe {
 
 .block {
     box-shadow: black 0px 0px 5px;
+    text-align: center;
+    justify-content: space-evenly;
 }
 
 li.skill {
@@ -109,8 +111,9 @@ li.skill {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    text-align: center;
     margin: auto 20px;
-    max-width: 1300px;
+    max-width: 1400px;
 }
 
 .skill img {
@@ -133,7 +136,11 @@ li.skill {
 .thumbnails {
     flex-direction: row;
     flex-wrap: wrap;
-    max-width: 1300px
+    max-width: 1360px;
+
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 .thumbnails a img {
@@ -179,4 +186,6 @@ footer {
 
 ul {
     list-style: none;
+    padding: 0;
+    margin: 0;
 }
