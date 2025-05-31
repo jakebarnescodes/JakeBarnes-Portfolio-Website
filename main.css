@@ -7,6 +7,15 @@
     --color-button: rgb(100,100,100);
 }
 
+.vt323-regular {
+  font-family: "VT323", monospace;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 1px;
+  word-spacing: 1px;
+}
+
+
 body {
     background-color: var(--color-bg);
     color: white;
@@ -114,12 +123,67 @@ section {
     justify-content: center;
     align-items: center;
     text-align: center;
-    display: grid;
-    height: 600px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 1360px;
+    margin-top: 20px;
+    padding: 30px;
+}
+
+.banner iframe {
+    margin: 0 0 10px 0;
+}
+
+.banner .vbox {
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    padding: 0 0 0 10px;
+    margin: 0 10px 0 10px;
+}
+
+.banner_logo {
+    border-radius: 10px;
+    max-width: 580px;
+    height: auto;
+    margin: 10px 0 0 0;
+    background-color: transparent;
+    filter: drop-shadow(5px 5px 5px black);
+}
+
+.banner p {
+    color: white;
+    max-width: 460px;
+    padding: 0 10px 0 10px;
+    font: "vt323-regular";
+    margin-top: 10px;
+    margin-bottom: 15px;
+    font-size: 26px;
+    filter: drop-shadow(3px 3px 3px black);
+}
+
+.banner button {
+    background-color: rgb(0, 50, 0);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    border-radius: 10px;
+    padding: 10px;
+    font: "vt323-regular";
+    filter: drop-shadow(5px 5px 5px black);
+    text-shadow: 3px 3px 3px black;
+    margin-top: 0;
+}
+
+.banner button:hover {
+    background-color: rgb(0, 100, 0);
+    transform: scale(1.05);
 }
 
 iframe {
-    filter: drop-shadow(5px 5px 5px black);
+    filter: drop-shadow(0px 0px 5px lime);
 }
 
 li.skill {
@@ -151,7 +215,7 @@ li.skill {
 
 .thumbnails {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(330px, 350px));
+    grid-template-columns: repeat(auto-fit, minmax(330px, 360px));
     justify-content: center;
 }
 
