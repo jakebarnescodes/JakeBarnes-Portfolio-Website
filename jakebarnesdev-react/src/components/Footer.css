@@ -1,0 +1,17 @@
+.footer {
+    padding-top: 32px;
+    padding-bottom: 32px;
+}
+
+.social_icon {
+    height: 48px;
+    width: auto;
+    padding: 0;
+    margin: 0 10px;
+    background-color: transparent;
+    filter: drop-shadow(5px 5px 5px black);
+}
+
+.social_icon:hover {
+    transform: scale(1.05);
+}
