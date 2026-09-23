@@ -1,0 +1,12 @@
+.game_box a img {
+    height: 290px;
+    width: 400px;
+    box-shadow: black 5px 5px 10px;
+    margin: 20px;
+    border: 1px solid lightblue;
+    transition: transform 0.3s ease;
+}
+
+.game_box a img:hover {
+    transform: scale(1.05);
+}

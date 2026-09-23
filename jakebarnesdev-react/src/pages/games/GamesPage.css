@@ -1,0 +1,18 @@
+.game_boxes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 1800px) {
+  .game_boxes {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1400px) {
+  .game_boxes {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 450px));
+  }
+}
