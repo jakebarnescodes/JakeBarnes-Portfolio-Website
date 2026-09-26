@@ -2,18 +2,21 @@
     --color-bg: rgb(10,10,10);
     margin: 0;
     padding: 0;
+    background-color: var(--color-bg);
+    background-image: url('./assets/stars.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
 }
 
 body {
-    background-color: var(--color-bg);
+    margin: 0;
     color: white;
     justify-content: center;
     display: flex;
     flex-direction: column;
     text-align: center;
     align-items: center;
-    background-image: url('./assets/stars.jpg');
-    background-size: cover;       /* scales image to cover entire viewport */
-    background-repeat: no-repeat; /* prevents tiling */
-    background-position: center;  /* keeps image centered */
+    font-family: OCR A Std, monospace;
 }

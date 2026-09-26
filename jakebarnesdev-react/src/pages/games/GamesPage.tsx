@@ -1,4 +1,3 @@
-import { Footer } from '../../components/Footer';
 import { Logo } from '../../components/Logo';
 import { GameBox } from './GameBox';
 import './GamesPage.css'
@@ -26,7 +25,6 @@ export function GamesPage() {
                 <GameBox link="https://jakebarnes.itch.io/amity-tower" imageName="Amity Tower" altText="Amity Tower" />
                 <GameBox link="https://jakebarnes.itch.io/n13" imageName="Neighborhood_13" altText="Neighborhood 13" />
             </div>
-            <Footer />
         </>
     );
 }
