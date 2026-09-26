@@ -1,0 +1,60 @@
+.orbiter-container {
+    position: relative;
+    display: grid;
+    grid-template: 1fr / 1fr;
+    width: 100%;
+}
+
+.orbiter-container > * {
+    grid-area: 1 / 1;
+}
+
+.orbiter-content {
+    display: inline-block;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: scale 0.3s ease;
+    text-decoration: none;
+}
+
+.orbiter-content:hover {
+    scale: 1.2;
+}
+
+.orbiter-content:visited {
+    color: white;
+}
+
+.orbiter-content img {
+    width: 4vh;
+}
+
+.orbiter-content p {
+    margin: 0;
+    font-size: 1.4vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 0.2vw;
+}
+
+.mobile-menu-container {
+    margin-top: 1vh;
+}
+
+.mobile-menu-option {
+    text-decoration: none;
+    color: darkblue;
+}
+
+.mobile-menu-option:visited {
+    color: darkblue;
+}
+
+.mobile-menu-option img {
+    width: 75vw;
+    height: 45px;
+}
+
+.mobile-menu-option h2 {
+    translate: 0% -215%;
+}

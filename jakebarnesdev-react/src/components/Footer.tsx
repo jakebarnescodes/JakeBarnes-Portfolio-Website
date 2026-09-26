@@ -1,7 +1,7 @@
-import BlueSkyIcon from '../assets/social_icons/bluesky.png';
-import GitHubIcon from '../assets/social_icons/github.png';
-import LinkedInIcon from '../assets/social_icons/linkedin.png';
-import EmailIcon from '../assets/social_icons/email.png';
+import BlueSkyIcon from '../assets/planets/bluesky.png';
+import GitHubIcon from '../assets/planets/github.png';
+import LinkedInIcon from '../assets/planets/linkedin.png';
+import EmailIcon from '../assets/planets/email.png';
 import './Footer.css'
 
 export function Footer() {

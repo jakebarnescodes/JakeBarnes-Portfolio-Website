@@ -1,8 +1,20 @@
 .jbd_logo {
     justify-content: center;
     display: inline-block;
-    width: 100%;
-    max-width: 1204px;
-    height: auto;
-    margin: 32px 0;
+    width: auto;
+    height: 10vh;
+    margin: 2vh 0;
+}
+
+@media (max-width: 768px) {
+    .jbd_logo {
+        margin: 5vh 0;
+    }
+}
+
+@media (max-width: 500px) {
+    .jbd_logo {
+        width: 360px;
+        height: auto;
+    }
 }
