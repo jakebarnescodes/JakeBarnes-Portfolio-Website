@@ -7,7 +7,7 @@ export function Orbiter({ currentAngle, angleOffset, distance, children } : { cu
 
     useEffect(() => {
         setX(40 * distance * Math.cos(((currentAngle + angleOffset) * Math.PI) / 180));
-        setY(30 * distance * Math.sin(((currentAngle + angleOffset) * Math.PI) / 180));
+        setY(29 * distance * Math.sin(((currentAngle + angleOffset) * Math.PI) / 180));
         setScale(1 + 0.3 * distance * Math.sin(((currentAngle + angleOffset) * Math.PI) / 180));
     }, [currentAngle]);
 

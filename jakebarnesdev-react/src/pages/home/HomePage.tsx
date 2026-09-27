@@ -10,7 +10,7 @@ import gamesImage from '../../assets/planets/games.png';
 import './HomePage.css'
 
 export function HomePage({ isMobile }: { isMobile: boolean }) {
-    const [angle, setAngle] = useState(0);
+    const [angle, setAngle] = useState(30);
 
 
     useEffect(() => {
