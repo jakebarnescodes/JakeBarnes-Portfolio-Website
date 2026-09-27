@@ -1,0 +1,28 @@
+.planet {
+    display: inline-block;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: scale 0.3s ease;
+    text-decoration: none;
+}
+
+.planet:hover {
+    scale: 1.2;
+}
+
+.planet:visited {
+    color: white;
+}
+
+.planet img {
+    width: 8vh;
+    image-rendering: pixelated;
+}
+
+.planet p {
+    margin: 0;
+    font-size: 1.4vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 0.2vw;
+}
