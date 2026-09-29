@@ -12,7 +12,6 @@ import './HomePage.css'
 export function HomePage({ isMobile }: { isMobile: boolean }) {
     const [angle, setAngle] = useState(30);
 
-
     useEffect(() => {
         setInterval(() => {
             setAngle((prevAngle) => (prevAngle + 0.125) % 360);
