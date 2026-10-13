@@ -1,0 +1,12 @@
+.hearts-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+.hearts-container img {
+    height : 4vh;
+    image-rendering: pixelated;
+    margin: 0.75vh;
+}

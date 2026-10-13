@@ -1,0 +1,10 @@
+.player-ship {
+    position: fixed;
+    image-rendering: pixelated;
+    transform-origin: center;
+}
+
+.player-ship img {
+    display: block;
+    height: 4vh;
+}

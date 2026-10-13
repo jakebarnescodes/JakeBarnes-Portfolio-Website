@@ -1,0 +1,10 @@
+.asteroid {
+    position: fixed;
+    image-rendering: pixelated;
+    transform-origin: center;
+}
+
+.asteroid img {
+    display: block;
+    height: 8vh;
+}
