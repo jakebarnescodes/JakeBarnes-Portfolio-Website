@@ -7,6 +7,7 @@ import githubImage from '../../assets/planets/github.png';
 import linkedinImage from '../../assets/planets/linkedin.png';
 import emailImage from '../../assets/planets/email.png';
 import gamesImage from '../../assets/planets/games.png';
+import minigameImage from '../../assets/planets/minigame.png';
 import './HomePage.css'
 
 export function HomePage({ isMobile }: { isMobile: boolean }) {
@@ -67,10 +68,19 @@ export function HomePage({ isMobile }: { isMobile: boolean }) {
                             isExternal={false}
                             link="/games"
                             imageSrc={gamesImage}
-                            color="rgb(244, 45, 60)"
+                            color="rgb(255, 255, 255)"
                         />
                     </Orbiter>
                     <Orbiter currentAngle={angle} angleOffset={0} distance={0.4}>
+                        <Planet
+                            name="Play Minigame"
+                            isExternal={false}
+                            link="/minigame"
+                            imageSrc={minigameImage}
+                            color="rgb(57, 255, 0)"
+                        />
+                    </Orbiter>
+                    <Orbiter currentAngle={angle} angleOffset={72} distance={0.6}>
                         <Planet
                             name="Follow my BlueSky"
                             isExternal={true}
@@ -79,7 +89,7 @@ export function HomePage({ isMobile }: { isMobile: boolean }) {
                             color="rgb(0, 106, 255)"
                         />
                     </Orbiter>
-                    <Orbiter currentAngle={angle} angleOffset={90} distance={0.6}>
+                    <Orbiter currentAngle={angle} angleOffset={216} distance={0.8}>
                         <Planet
                             name="My GitHub"
                             isExternal={true}
@@ -88,7 +98,7 @@ export function HomePage({ isMobile }: { isMobile: boolean }) {
                             color="rgb(240, 81, 51)"
                         />
                     </Orbiter>
-                    <Orbiter currentAngle={angle} angleOffset={180} distance={0.8}>
+                    <Orbiter currentAngle={angle} angleOffset={144} distance={0.9}>
                         <Planet
                             name="My LinkedIn"
                             isExternal={true}
@@ -97,7 +107,7 @@ export function HomePage({ isMobile }: { isMobile: boolean }) {
                             color="rgb(2, 116, 179)"
                         />
                     </Orbiter>
-                    <Orbiter currentAngle={angle} angleOffset={270} distance={1.0}>
+                    <Orbiter currentAngle={angle} angleOffset={288} distance={1.0}>
                         <Planet
                             name="Email Me"
                             isExternal={true}

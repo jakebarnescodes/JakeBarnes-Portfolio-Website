@@ -1,0 +1,10 @@
+.lasers {
+    position: fixed;
+    image-rendering: pixelated;
+    transform-origin: center;
+}
+
+.lasers img {
+    display: block;
+    height: 3.5vh;
+}
