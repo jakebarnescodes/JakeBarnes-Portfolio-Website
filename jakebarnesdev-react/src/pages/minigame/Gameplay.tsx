@@ -5,20 +5,30 @@ import { Asteroid } from "./Asteroid";
 import HeartImage from '../../assets/minigame/heart.png'
 import './Gameplay.css'
 
-export function Gameplay() {
+export function Gameplay({
+    score,
+    setScene
+}: {
+    score: React.RefObject<number>;
+    setScene: React.Dispatch<React.SetStateAction<string>>;
+}) {
     const [, setRenderFrame] = useState(0);
+    const fps = useRef(0);
+    const displayedFPS = useRef(0);
     const keysPressed = useRef<Record<string, boolean>>({});
 
     const playerPosition = useRef({ x: 0, y: 0 });
-    const playerRotation = useRef(0);
-    const playerMovementSpeed = 0.2;
+    const playerRotation = useRef(Math.random() * 2 * Math.PI);
+    const playerMovementSpeed = 0.0005;
     const playerRotationSpeed = 0.005;
-    const playerHitboxBaseRadius = 0.03;
+    const playerHitboxBaseRadius = 0.027;
+    const playerVelocity = useRef({ x: 0, y: 0 });
+    const playerMaxVelocity = 0.8;
 
-    const lasersShot = useRef(false);
+    const lasersShot = useRef(true);
     const lasersPosition = useRef({ x: 0, y: 0 });
     const lasersRotation = useRef(0);
-    const lasersMovementSpeed = 0.4;
+    const lasersMovementSpeed = playerMaxVelocity * 1.1;
     const lasersHitboxBaseRadius = 0.03;
 
     type AsteroidData = {
@@ -30,8 +40,9 @@ export function Gameplay() {
     };
     const asteroids = useRef<AsteroidData[]>([]);
     const [asteroidsState, setAsteroidsState] = useState<AsteroidData[]>([]);
-    const asteroidHitboxBaseRadius = 0.03;
+    const asteroidHitboxBaseRadius = 0.027;
     const maxAsteroidCount = 200;
+    const asteroidSpawnTimer = useRef(5 * 1000);
 
     const [lives, setLives] = useState(3);
 
@@ -66,7 +77,7 @@ export function Gameplay() {
                     }
                     x = (Math.random() * window.innerWidth) - (window.innerWidth / 2);
                 }
-                if (Math.random() > 0.5) {
+                else {
                     // Left or Right
                     if (Math.random() > 0.5) {
                         // Right
@@ -83,7 +94,7 @@ export function Gameplay() {
                 id: crypto.randomUUID(),
                 position: { x: x, y: y },
                 rotation: rotation,
-                movementSpeed: Math.random() * 0.2,
+                movementSpeed: Math.random() * 0.3,
                 size: size
             };
             //setAsteroids((prev) => [...prev, newAsteroid]);
@@ -98,10 +109,19 @@ export function Gameplay() {
         let lastTime: number | null = null;
         function gameLoop(currentTime: number) {
             const deltaTime = lastTime === null ? 0 : currentTime - lastTime;
+            fps.current = 1000 / deltaTime;
             lastTime = currentTime;
 
             const halfWidth = window.innerWidth / 2;
             const halfHeight = window.innerHeight / 2;
+
+            let playerHit = false;
+
+            // Check for Game Over
+            if (lives <= 0) {
+                console.log("Game Over");
+                setScene("gameover");
+            }
 
             // Player Update
             let playerHitboxCalculatedRadius = playerHitboxBaseRadius * window.innerHeight;
@@ -112,13 +132,20 @@ export function Gameplay() {
                 playerRotation.current += playerRotationSpeed * deltaTime;
             }
             if (keysPressed.current['ArrowUp']) {
-                playerPosition.current.x += Math.cos(playerRotation.current) * playerMovementSpeed * deltaTime;
-                playerPosition.current.y += Math.sin(playerRotation.current) * playerMovementSpeed * deltaTime;
+                playerVelocity.current.x += Math.cos(playerRotation.current) * playerMovementSpeed * deltaTime;
+                playerVelocity.current.y += Math.sin(playerRotation.current) * playerMovementSpeed * deltaTime;
             }
-            //if (keysPressed.current['ArrowDown']) {
-            //    playerPosition.current.x -= Math.cos(playerRotation.current) * playerMovementSpeed * deltaTime;
-            //    playerPosition.current.y -= Math.sin(playerRotation.current) * playerMovementSpeed * deltaTime;
-            //}
+            else {
+                playerVelocity.current.x *= 0.99;
+                playerVelocity.current.y *= 0.99;
+            }
+            let velocityMagnitude = Math.sqrt(playerVelocity.current.x * playerVelocity.current.x + playerVelocity.current.y * playerVelocity.current.y);
+            if (velocityMagnitude > playerMaxVelocity) {
+                playerVelocity.current.x = (playerVelocity.current.x / velocityMagnitude) * playerMaxVelocity;
+                playerVelocity.current.y = (playerVelocity.current.y / velocityMagnitude) * playerMaxVelocity;
+            }
+            playerPosition.current.x += playerVelocity.current.x * deltaTime;
+            playerPosition.current.y += playerVelocity.current.y * deltaTime;
             if (playerPosition.current.x < -halfWidth) playerPosition.current.x = halfWidth;
             if (playerPosition.current.x > halfWidth) playerPosition.current.x = -halfWidth;
             if (playerPosition.current.y < -halfHeight) playerPosition.current.y = halfHeight;
@@ -135,7 +162,7 @@ export function Gameplay() {
             }
 
             // Asteroids Update
-            const newAsteroids: AsteroidData[] = [];
+            let newAsteroids: AsteroidData[] = [];
             asteroids.current = asteroids.current.filter((asteroid) => {
                 asteroid.position.x += Math.cos(asteroid.rotation) * asteroid.movementSpeed * deltaTime;
                 asteroid.position.y += Math.sin(asteroid.rotation) * asteroid.movementSpeed * deltaTime;
@@ -151,6 +178,7 @@ export function Gameplay() {
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     if (distance < asteroidHitboxCalculatedRadius + lasersHitboxCalculatedRadius) {
                         lasersShot.current = false;
+                        score.current += 1;
                         if (asteroid.size > 0.6 && asteroids.current.length < maxAsteroidCount) {
                             newAsteroids.push(createAsteroid(asteroid.size * 0.75, { x: asteroid.position.x, y: asteroid.position.y }));
                             newAsteroids.push(createAsteroid(asteroid.size * 0.75, { x: asteroid.position.x, y: asteroid.position.y }));
@@ -164,19 +192,27 @@ export function Gameplay() {
                     const dy = asteroid.position.y - playerPosition.current.y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     if (distance < asteroidHitboxCalculatedRadius + playerHitboxCalculatedRadius) {
-                        setLives(lives - 1);
-                        if (lives <= 0) {
-                            console.log("Game Over");
-                        }
+                        playerHit = true;
                         return false;
                     }
                 }
                 return true;
             });
+
+            // Check for Respawn
+            if (playerHit) {
+                setLives(lives - 1);
+                playerVelocity.current = { x: 0, y: 0 };
+                playerPosition.current = { x: 0, y: 0 };
+                playerRotation.current = Math.random() * 2 * Math.PI;
+                asteroids.current = [];
+                playerHit = false;
+            }
+
             asteroids.current.push(...newAsteroids);
             setAsteroidsState(asteroids.current);
 
-            if (asteroids.current.length <= 1) {
+            if (asteroids.current.length < 4) {
                 createAsteroid(1, null);
             }
 
@@ -185,12 +221,12 @@ export function Gameplay() {
         }
         animationId = requestAnimationFrame(gameLoop);
 
-        const spawnTimer : number = 5;
         const spawnInterval = window.setInterval(() => {
             if (asteroids.current.length < maxAsteroidCount) {
-                createAsteroid(1, null);
+                createAsteroid(Math.random() + 0.5, null);
             }
-        }, 1000 * spawnTimer);
+            asteroidSpawnTimer.current = Math.max(1, 0.98 * asteroidSpawnTimer.current);
+        }, asteroidSpawnTimer.current);
 
         return () => {
             cancelAnimationFrame(animationId);
@@ -198,7 +234,7 @@ export function Gameplay() {
             window.removeEventListener("keydown", handleKeyDown);
             window.removeEventListener("keyup", handleKeyUp);
         };
-    }, [lives]);
+    }, [lives, asteroidSpawnTimer.current]);
 
     useEffect(() => {
         console.log(lasersShot);
@@ -207,6 +243,12 @@ export function Gameplay() {
         lasersPosition.current.y = playerPosition.current.y;
     }, [lasersShot.current]);
 
+    useEffect(() => {
+        setInterval(() => {
+            displayedFPS.current = fps.current;
+        }, 100);
+    }, []);
+
     return (
         <div>
             <div className="hearts-container">
@@ -214,8 +256,20 @@ export function Gameplay() {
                 {lives >= 2 ? (<img src={HeartImage} alt="Heart" />) : null}
                 {lives >= 3 ? (<img src={HeartImage} alt="Heart" />) : null}
             </div>
-            <p>{asteroids.current.length}</p>
-            <p>{asteroidsState.length}</p>
+            
+            <p
+                className="instructions-container"
+            >Arrow Keys to Move. Spacebar to Shoot.</p>
+            <p
+                className="score-text"
+            >{"Score: " + score.current}</p>
+            <p
+                className="fps-counter"
+            >{displayedFPS.current.toFixed(0)} FPS
+            </p>
+            <button className="menu-button" onClick={() => window.location.href = '/'}>
+                Exit Minigame
+            </button>
             <PlayerShip
                 playerPosition={playerPosition}
                 playerRotation={playerRotation}

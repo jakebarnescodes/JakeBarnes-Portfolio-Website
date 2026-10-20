@@ -1,0 +1,29 @@
+.game-over-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.game-over-text {
+    color: red;
+    font-style: bold;
+    font-size: 8vh;
+    margin: 0;
+    text-shadow: 0 0 10px black;
+}
+
+.final-score-text {
+    color: white;
+    font-size: 4vh;
+    margin: 0;
+    text-shadow: 0 0 10px black;
+}
+
+.game-over-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 2vh 0 0 0;
+}

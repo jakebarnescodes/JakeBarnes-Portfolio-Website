@@ -1,0 +1,20 @@
+.menu-button {
+    background-image: url('./assets/menu_button.webp');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    cursor: pointer;
+    padding: 0.75vh 2vh;
+    color: blue;
+    font-size: 1.5vh;
+    margin-left: 1vh;
+    margin-right: 1vh;
+    font-style: bold;
+    transition: scale 0.2s ease-in-out;
+}
+
+.menu-button:hover {
+    scale: 1.05;
+    box-shadow: 0 0 10px lightblue;
+}
