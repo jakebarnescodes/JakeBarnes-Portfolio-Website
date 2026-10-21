@@ -3,6 +3,9 @@ import { Lasers } from "./Lasers";
 import { PlayerShip } from "./PlayerShip";
 import { Asteroid } from "./Asteroid";
 import HeartImage from '../../assets/minigame/heart.png'
+import LasersSound from '../../assets/minigame/lasers.wav'
+import ExplosionSound from '../../assets/minigame/explosion.wav'
+import HitSound from '../../assets/minigame/hit.wav'
 import './Gameplay.css'
 
 export function Gameplay({
@@ -55,6 +58,7 @@ export function Gameplay({
                 event.preventDefault();
                 if (!event.repeat && !lasersShot.current) {
                     lasersShot.current = true;
+                    playSound(LasersSound);
                 }
             }
             keysPressed.current[event.key] = true;
@@ -102,6 +106,14 @@ export function Gameplay({
             return newAsteroid;
         }
 
+        let playedSounds: Record<string, HTMLAudioElement> = {};
+        function playSound(sound : string) {
+            if (!playedSounds[sound]) {
+                playedSounds[sound] = new Audio(sound);
+            }
+            playedSounds[sound].play();
+        }
+
         window.addEventListener("keydown", handleKeyDown);
         window.addEventListener("keyup", handleKeyUp);
 
@@ -119,7 +131,6 @@ export function Gameplay({
 
             // Check for Game Over
             if (lives <= 0) {
-                console.log("Game Over");
                 setScene("gameover");
             }
 
@@ -177,6 +188,7 @@ export function Gameplay({
                     const dy = asteroid.position.y - lasersPosition.current.y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     if (distance < asteroidHitboxCalculatedRadius + lasersHitboxCalculatedRadius) {
+                        playSound(HitSound);
                         lasersShot.current = false;
                         score.current += 1;
                         if (asteroid.size > 0.6 && asteroids.current.length < maxAsteroidCount) {
@@ -201,6 +213,7 @@ export function Gameplay({
 
             // Check for Respawn
             if (playerHit) {
+                playSound(ExplosionSound);
                 setLives(lives - 1);
                 playerVelocity.current = { x: 0, y: 0 };
                 playerPosition.current = { x: 0, y: 0 };
@@ -237,7 +250,6 @@ export function Gameplay({
     }, [lives, asteroidSpawnTimer.current]);
 
     useEffect(() => {
-        console.log(lasersShot);
         lasersRotation.current = playerRotation.current.valueOf();
         lasersPosition.current.x = playerPosition.current.x;
         lasersPosition.current.y = playerPosition.current.y;
