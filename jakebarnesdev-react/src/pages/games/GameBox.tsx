@@ -8,7 +8,7 @@ const images = import.meta.glob(
 export function GameBox({ link, imageName, altText }: { link: string; imageName: string; altText: string }) {
     return (
         <div className="game_box">
-            <a href={link} target="_blank">
+            <a href={link} target="_blank" rel="noreferrer">
                 <img src={images[`../../assets/game_boxes/${imageName}.webp`]} alt={altText} />
             </a>
         </div>

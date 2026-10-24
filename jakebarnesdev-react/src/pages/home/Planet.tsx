@@ -11,7 +11,7 @@ export function Planet({ name, isExternal, link, imageSrc, color} : {
     return (
         <>
             {isExternal ? (
-                <a className="planet" target="_blank"
+                <a className="planet" target="_blank" rel="noreferrer"
                     href={link}
                     style={{ color: color }}
                 >

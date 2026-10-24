@@ -17,11 +17,11 @@ export function Gameplay({
 }) {
     const [, setRenderFrame] = useState(0);
     const fps = useRef(0);
-    const displayedFPS = useRef(0);
+    const [displayedFPS, setDisplayFPS] = useState(0);
     const keysPressed = useRef<Record<string, boolean>>({});
 
     const playerPosition = useRef({ x: 0, y: 0 });
-    const playerRotation = useRef(Math.random() * 2 * Math.PI);
+    const playerRotation = useRef(1.5 * Math.PI);
     const playerMovementSpeed = 0.0005;
     const playerRotationSpeed = 0.005;
     const playerHitboxBaseRadius = 0.027;
@@ -29,9 +29,10 @@ export function Gameplay({
     const playerMaxVelocity = 0.8;
 
     const lasersShot = useRef(true);
+    const [lasersShotState, setLasersShotState] = useState(false);
     const lasersPosition = useRef({ x: 0, y: 0 });
     const lasersRotation = useRef(0);
-    const lasersMovementSpeed = playerMaxVelocity * 1.1;
+    const lasersMovementSpeed = 0.9;
     const lasersHitboxBaseRadius = 0.03;
 
     type AsteroidData = {
@@ -46,6 +47,7 @@ export function Gameplay({
     const asteroidHitboxBaseRadius = 0.027;
     const maxAsteroidCount = 200;
     const asteroidSpawnTimer = useRef(5 * 1000);
+    const [asteroidSpawnTimerState, setAsteroidSpawnTimerState] = useState(0);
 
     const [lives, setLives] = useState(3);
 
@@ -69,7 +71,7 @@ export function Gameplay({
         }
 
         function createAsteroid(size: number = 1, spawnPosition: { x: number; y: number } | null = null) {
-            let rotation = Math.random() * 2 * Math.PI;
+            const rotation = Math.random() * 2 * Math.PI;
             let x = -window.innerWidth / 2;
             let y = -window.innerHeight / 2;
             if (spawnPosition === null) {
@@ -106,7 +108,7 @@ export function Gameplay({
             return newAsteroid;
         }
 
-        let playedSounds: Record<string, HTMLAudioElement> = {};
+        const playedSounds: Record<string, HTMLAudioElement> = {};
         function playSound(sound : string) {
             if (!playedSounds[sound]) {
                 playedSounds[sound] = new Audio(sound);
@@ -135,7 +137,7 @@ export function Gameplay({
             }
 
             // Player Update
-            let playerHitboxCalculatedRadius = playerHitboxBaseRadius * window.innerHeight;
+            const playerHitboxCalculatedRadius = playerHitboxBaseRadius * window.innerHeight;
             if (keysPressed.current['ArrowLeft']) {
                 playerRotation.current -= playerRotationSpeed * deltaTime;
             }
@@ -150,7 +152,7 @@ export function Gameplay({
                 playerVelocity.current.x *= 0.99;
                 playerVelocity.current.y *= 0.99;
             }
-            let velocityMagnitude = Math.sqrt(playerVelocity.current.x * playerVelocity.current.x + playerVelocity.current.y * playerVelocity.current.y);
+            const velocityMagnitude = Math.sqrt(playerVelocity.current.x * playerVelocity.current.x + playerVelocity.current.y * playerVelocity.current.y);
             if (velocityMagnitude > playerMaxVelocity) {
                 playerVelocity.current.x = (playerVelocity.current.x / velocityMagnitude) * playerMaxVelocity;
                 playerVelocity.current.y = (playerVelocity.current.y / velocityMagnitude) * playerMaxVelocity;
@@ -163,7 +165,7 @@ export function Gameplay({
             if (playerPosition.current.y > halfHeight) playerPosition.current.y = -halfHeight;
 
             // Lasers Update
-            let lasersHitboxCalculatedRadius = lasersHitboxBaseRadius * window.innerHeight;
+            const lasersHitboxCalculatedRadius = lasersHitboxBaseRadius * window.innerHeight;
             if (lasersShot.current) {
                 lasersPosition.current.x += Math.cos(lasersRotation.current) * lasersMovementSpeed * deltaTime;
                 lasersPosition.current.y += Math.sin(lasersRotation.current) * lasersMovementSpeed * deltaTime;
@@ -173,7 +175,7 @@ export function Gameplay({
             }
 
             // Asteroids Update
-            let newAsteroids: AsteroidData[] = [];
+            const newAsteroids: AsteroidData[] = [];
             asteroids.current = asteroids.current.filter((asteroid) => {
                 asteroid.position.x += Math.cos(asteroid.rotation) * asteroid.movementSpeed * deltaTime;
                 asteroid.position.y += Math.sin(asteroid.rotation) * asteroid.movementSpeed * deltaTime;
@@ -181,7 +183,7 @@ export function Gameplay({
                 if (asteroid.position.x > halfWidth) asteroid.position.x = -halfWidth;
                 if (asteroid.position.y < -halfHeight) asteroid.position.y = halfHeight;
                 if (asteroid.position.y > halfHeight) asteroid.position.y = -halfHeight;
-                let asteroidHitboxCalculatedRadius = asteroidHitboxBaseRadius * window.innerHeight * asteroid.size;
+                const asteroidHitboxCalculatedRadius = asteroidHitboxBaseRadius * window.innerHeight * asteroid.size;
                 // Lasers Collision
                 if (lasersShot.current) {
                     const dx = asteroid.position.x - lasersPosition.current.x;
@@ -229,6 +231,8 @@ export function Gameplay({
                 createAsteroid(1, null);
             }
 
+            setLasersShotState(lasersShot.current);
+
             animationId = requestAnimationFrame(gameLoop);
             setRenderFrame(frame => frame + 1);
         }
@@ -239,6 +243,7 @@ export function Gameplay({
                 createAsteroid(Math.random() + 0.5, null);
             }
             asteroidSpawnTimer.current = Math.max(1, 0.98 * asteroidSpawnTimer.current);
+            setAsteroidSpawnTimerState(asteroidSpawnTimer.current);
         }, asteroidSpawnTimer.current);
 
         return () => {
@@ -247,17 +252,17 @@ export function Gameplay({
             window.removeEventListener("keydown", handleKeyDown);
             window.removeEventListener("keyup", handleKeyUp);
         };
-    }, [lives, asteroidSpawnTimer.current]);
+    }, [lives, asteroidSpawnTimerState, setScene, score]);
 
     useEffect(() => {
         lasersRotation.current = playerRotation.current.valueOf();
         lasersPosition.current.x = playerPosition.current.x;
         lasersPosition.current.y = playerPosition.current.y;
-    }, [lasersShot.current]);
+    }, [lasersShotState]);
 
     useEffect(() => {
         setInterval(() => {
-            displayedFPS.current = fps.current;
+            setDisplayFPS(fps.current);
         }, 100);
     }, []);
 
@@ -277,7 +282,7 @@ export function Gameplay({
             >{"Score: " + score.current}</p>
             <p
                 className="fps-counter"
-            >{displayedFPS.current.toFixed(0)} FPS
+            >{displayedFPS.toFixed(0)} FPS
             </p>
             <button className="menu-button" onClick={() => window.location.href = '/'}>
                 Exit Minigame
@@ -286,7 +291,7 @@ export function Gameplay({
                 playerPosition={playerPosition}
                 playerRotation={playerRotation}
             />
-            {lasersShot.current &&
+            {lasersShotState &&
                 <Lasers
                     lasersPosition={lasersPosition}
                     lasersRotation={lasersRotation}
